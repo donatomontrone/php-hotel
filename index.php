@@ -63,19 +63,47 @@ Se non viene specificato nessun filtro, visualizzare come in precedenza tutti gl
     <!-- Bootstrap v5.3-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="./styles/style.css">
 </head>
 
 <body>
-    <p> <?php
-        foreach ($hotels as $hotel) {
-            echo "{$hotel['name']} <br>";
-            echo "{$hotel['description']} <br>";
-            echo "{$hotel['parking']} <br>";
-            echo "{$hotel['vote']} <br>";
-            echo "{$hotel['distance_to_center']}<br>";
-        }
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src=https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Booking.com_logo.svg/2560px-Booking.com_logo.svg.png
+                    alt="Logo" width="357" height="60" class="d-inline-block align-text-top"></a>
+        </div>
+    </nav>
+    <main class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table">
+                        <thead>
+                            <tr> <?php
+                                    foreach (array_keys($hotels[0]) as $key) {
+                                        $title = str_replace("_", " ", ucfirst($key));
+                                        echo "<th scope='col'> {$title} </th>";
+                                    }
+                                    ?> </tr>
+                        </thead>
+                        <tbody>
+                            <tr> <?php
+                                    foreach ($hotels as $hotel) {
+                                        echo "<td> {$hotel['name']} </td>";
+                                        echo "<td> {$hotel['description']} </td>";
+                                        echo "<td>" . ($hotel['parking'] ? "Sì" : "No") . "</td>";
+                                        echo "<td> {$hotel['vote']} </td>";
+                                        echo "<td> {$hotel['distance_to_center']} </td></tr>";
+                                    }
 
-        ?> </p>
+                                    ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
 </body>
 
 </html>
