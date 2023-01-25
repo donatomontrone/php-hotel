@@ -78,6 +78,19 @@ Se non viene specificato nessun filtro, visualizzare come in precedenza tutti gl
         <div class="container">
             <div class="row">
                 <div class="col-12">
+                    <form method="GET" class="mb-3">
+                        <div class="mb-3">
+                            <label for="have-parking" class="form-label text-white">Cerca hotel con parcheggio:</label>
+                            <select name="have-parking" id="have-parking">
+                                <option value="">Tutti</option>
+                                <option value="0">No</option>
+                                <option value="1">Si</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn btn-outline-warning">Cerca</button>
+                    </form>
+                </div>
+                <div class="col-12">
                     <table class="table">
                         <thead>
                             <tr> <?php
@@ -89,7 +102,17 @@ Se non viene specificato nessun filtro, visualizzare come in precedenza tutti gl
                         </thead>
                         <tbody>
                             <tr> <?php
+                                    //Vedo se c'è un value nella select, se c'è lo inserisco in un nuovo array contenente solo gli hotel con/senza parcheggio
+                                    $filteredHotel = [];
+                                    $parking = isset($_GET['have-parking']) ? $_GET['have-parking'] : '';
                                     foreach ($hotels as $hotel) {
+                                        if ($parking === '' || $hotel['parking'] == $parking) {
+                                            $filteredHotel[] = $hotel;
+                                        }
+                                    }
+
+
+                                    foreach ($filteredHotel as $hotel) {
                                         echo "<td> {$hotel['name']} </td>";
                                         echo "<td> {$hotel['description']} </td>";
                                         echo "<td>" . ($hotel['parking'] ? "Sì" : "No") . "</td>";
