@@ -81,7 +81,7 @@ Se non viene specificato nessun filtro, visualizzare come in precedenza tutti gl
                     <form method="GET" class="mb-3">
                         <div class="mb-3">
                             <label for="have-parking" class="form-label text-white">Cerca hotel con parcheggio:</label>
-                            <select name="have-parking" id="have-parking">
+                            <select name="have-parking" id="have-parking" class="form-select">
                                 <option value="">Tutti</option>
                                 <option value="0">No</option>
                                 <option value="1">Si</option>
