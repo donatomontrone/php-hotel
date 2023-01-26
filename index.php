@@ -10,9 +10,7 @@ Bonus:
 NOTA sui bonus: deve essere possibile utilizzare entrambi i filtri contemporaneamente (es. ottenere una lista con hotel che dispongono di parcheggio e che hanno un voto di tre stelle o superiore)
 Se non viene specificato nessun filtro, visualizzare come in precedenza tutti gli hotel.
 :baby-yoda-soup: :baby-yoda-soup: :baby-yoda-soup: :baby-yoda-soup: :baby-yoda-soup: Buon lavoro! --> <?php
-
                                                                                                         $hotels = [
-
                                                                                                             [
                                                                                                                 'name' => 'Hotel Belvedere',
                                                                                                                 'description' => 'Hotel Belvedere Descrizione',
@@ -80,11 +78,22 @@ Se non viene specificato nessun filtro, visualizzare come in precedenza tutti gl
                 <div class="col-12">
                     <form method="GET" class="mb-3">
                         <div class="mb-3">
-                            <label for="have-parking" class="form-label text-white">Cerca hotel con parcheggio:</label>
-                            <select name="have-parking" id="have-parking" class="form-select">
-                                <option value="">Tutti</option>
-                                <option value="0">No</option>
+                            <label for="parking" class="form-label text-white">Cerca hotel con parcheggio:</label>
+                            <select name="parking" id="parking" class="form-select">
+                                <option value="0">Tutti</option>
                                 <option value="1">Si</option>
+                                <option value="2">No</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vote" class="form-label text-white">Cerca hotel per voto:</label>
+                            <select name="vote" id="vote" class="form-select">
+                                <option value="0">Tutti</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary btn btn-outline-warning">Cerca</button>
@@ -102,17 +111,23 @@ Se non viene specificato nessun filtro, visualizzare come in precedenza tutti gl
                         </thead>
                         <tbody>
                             <tr> <?php
-                                    //Vedo se c'è un value nella select, se c'è lo inserisco in un nuovo array contenente solo gli hotel con/senza parcheggio
-                                    $filteredHotel = [];
-                                    $parking = isset($_GET['have-parking']) ? $_GET['have-parking'] : '';
-                                    foreach ($hotels as $hotel) {
-                                        if ($parking === '' || $hotel['parking'] == $parking) {
-                                            $filteredHotel[] = $hotel;
+                                    $selectedHotel = $hotels;
+                                    if (isset($_GET['parking'])) {
+                                        if ($_GET['parking'] === '1' || $_GET['parking'] === '2') {
+                                            $parkingToCheck = ($_GET['parking'] === '1') ? true : false;
+                                            $selectedHotel = array_filter($selectedHotel, fn ($hotel) => $hotel['parking'] === $parkingToCheck);
                                         }
                                     }
 
+                                    if (
+                                        isset($_GET['vote']) &&
+                                        (intval($_GET['vote'] >= 1) && intval($_GET['vote'] <= 5))
+                                    ) {
+                                        $selectedHotel = array_filter($selectedHotel, fn ($hotel) => $hotel['vote'] >= intval($_GET['vote']));
+                                    }
 
-                                    foreach ($filteredHotel as $hotel) {
+
+                                    foreach ($selectedHotel as $hotel) {
                                         echo "<td> {$hotel['name']} </td>";
                                         echo "<td> {$hotel['description']} </td>";
                                         echo "<td>" . ($hotel['parking'] ? "Sì" : "No") . "</td>";
@@ -130,3 +145,15 @@ Se non viene specificato nessun filtro, visualizzare come in precedenza tutti gl
 </body>
 
 </html>
+<!-- Un array ordinario di array associativi 
+foreach (lista as elemento){
+    //Nel nostro caso elemento sarà acnora un array quindi sarà impossibile stamparlo con echo.
+
+    In questo caso ho 2 soluzioni
+
+    O ciclo su ogni key (che conosco già)
+    oppure creo un forEach interno.
+    foreach (elemnto as key -> value)
+}
+-->
+<!-- POer ogni hoel se il voto che abbiamo preso -->
